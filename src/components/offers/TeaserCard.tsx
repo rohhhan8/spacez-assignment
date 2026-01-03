@@ -9,6 +9,7 @@ const stripColors: Record<StripColor, string> = {
   blue: 'bg-[#2563EB]',
   pink: 'bg-[#DB2777]',
   black: 'bg-[#000000]',
+  red: 'bg-[#AE282E]',
 };
 
 const iconMap: Record<string, typeof Gift> = {
