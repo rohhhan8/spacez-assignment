@@ -90,7 +90,7 @@ export default function SideMenu({
                 {/* Logout */}
                 <button
                   onClick={handleLogout}
-                  className="w-full py-3 bg-[#874B2C] text-white font-medium rounded hover:bg-[#92400E] transition-colors"
+                  className="w-full py-3 bg-[#c16b3e] text-white font-medium rounded hover:bg-[#92400E] transition-colors"
                 >
                   logout
                 </button>
