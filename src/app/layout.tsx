@@ -15,8 +15,8 @@ const buda = Buda({
 });
 
 export const metadata: Metadata = {
-  title: "Spacez Offers | Exclusive Deals & Coupons",
-  description: "Unlock exclusive offers, gift cards, and payment deals for your next Spacez stay.",
+  title: "Spacez: Luxury Villas & Stays",
+  description: "Discover the perfect destination for your next vacation. Explore our collection of luxury villas and stays, and book your dream getaway today.",
 };
 
 export default function RootLayout({
