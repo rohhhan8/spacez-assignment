@@ -11,11 +11,11 @@ const tabs: { id: SectionId; label: string }[] = [
 /**
  * StickyNavTabs Component
  * 
- * Full-width tabs with underline indicator matching Figma design.
+ * Full-width tabs - hidden on desktop (lg and above).
  */
 export default function StickyNavTabs({ activeSection, onTabClick }: StickyNavTabsProps) {
   return (
-    <nav className="sticky top-0 z-40 bg-white">
+    <nav className="sticky top-0 z-40 bg-white lg:hidden">
       <div className="flex items-center justify-between border-b border-gray-200">
         {tabs.map((tab) => (
           <button

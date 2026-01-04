@@ -9,11 +9,11 @@ interface TeaserCardProps {
 /**
  * BonusGiftCardTeaser Component
  * 
- * Matches Figma: Shows "₹1000" with gift card illustrations.
+ * Matches card width, not full screen.
  */
 export default function BonusGiftCardTeaser({ onButtonClick }: TeaserCardProps) {
   return (
-    <div className="bg-[#fdf9f7] overflow-hidden">
+    <div className="bg-[#fdf9f7] overflow-hidden max-w-md">
       <div className="p-7 flex items-center justify-between">
         {/* Left Content */}
         <div className="flex-1">
@@ -58,6 +58,9 @@ export default function BonusGiftCardTeaser({ onButtonClick }: TeaserCardProps) 
           </div>
         </div>
       </div>
+
+      {/* White gap/separator above button */}
+      <div className="h-5 bg-white"></div>
 
       {/* CTA Button */}
       <button

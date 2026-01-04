@@ -10,11 +10,11 @@ interface PaymentTeaserProps {
 /**
  * PaymentOfferTeaser Component
  * 
- * Matches Figma: Shows "upto 15% Off" with payment illustration and CTA button.
+ * Matches card width, not full screen.
  */
 export default function PaymentOfferTeaser({ onButtonClick }: PaymentTeaserProps) {
   return (
-    <div className="bg-[#fdf9f7] overflow-hidden">
+    <div className="bg-[#fdf9f7] overflow-hidden max-w-md">
       <div className="p-5 flex items-center justify-between">
         {/* Left Content */}
         <div className="flex-1 pr-4">
@@ -39,6 +39,9 @@ export default function PaymentOfferTeaser({ onButtonClick }: PaymentTeaserProps
           />
         </div>
       </div>
+
+      {/* White gap/separator above button */}
+      <div className="h-4 bg-white"></div>
 
       {/* CTA Button */}
       <button

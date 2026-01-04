@@ -1,22 +1,20 @@
 'use client';
 
-import { AuthState } from '@/types';
+interface SignInCTAProps {
+  isSignedIn: boolean;
+  onSignIn: () => void;
+}
 
 /**
- * SignInCTA Component
- * 
- * Matches Figma: Simple text + full-width button when signed out,
- * subtle text when signed in.
+ * SignInCTA - Page title with sign in button
  */
-export default function SignInCTA({ isSignedIn, onSignIn }: AuthState) {
+export default function SignInCTA({ isSignedIn, onSignIn }: SignInCTAProps) {
   return (
     <div className="px-4 py-4 bg-white">
-      {/* Page Title */}
       <h1 className="text-2xl font-semibold text-[#1F2937] mb-2">
         Offers
       </h1>
 
-      {/* Subtitle */}
       <p className="text-sm text-[#6B7280] mb-4">
         {isSignedIn 
           ? 'Book directly with us to get exclusive benefits'
@@ -24,7 +22,6 @@ export default function SignInCTA({ isSignedIn, onSignIn }: AuthState) {
         }
       </p>
 
-      {/* Sign In Button - only when signed out */}
       {!isSignedIn && (
         <button
           onClick={onSignIn}

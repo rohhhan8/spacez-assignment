@@ -11,21 +11,22 @@ import BonusGiftCardTeaser from '@/components/offers/BonusGiftCardTeaser';
 import PaymentOfferTeaser from '@/components/offers/PaymentOfferTeaser';
 import Toast from '@/components/ui/Toast';
 import LoginModal from '@/components/ui/LoginModal';
+import SideMenu from '@/components/ui/SideMenu';
+import WelcomePopup from '@/components/ui/WelcomePopup';
 import { coupons, giftCards, paymentOffers } from '@/lib/data';
 import { SectionId, ToastState } from '@/types';
 
 /**
  * Spacez Offers Page
  * 
- * Product Engineering approach:
- * - Content Gate: Locked sections until sign in
- * - Scroll Spy: Tracks active section
- * - Ghost Login: Automated demo flow
+ * - Desktop: Full nav in header, 2-col grid, no sticky tabs
+ * - Mobile: Hamburger menu, sticky tabs, bottom nav
  */
 export default function OffersPage() {
   // Auth state
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   
   // Navigation state
   const [activeSection, setActiveSection] = useState<SectionId>('coupons');
@@ -63,7 +64,7 @@ export default function OffersPage() {
     return () => observer.disconnect();
   }, []);
 
-  // Tab click handler - smooth scroll to section
+  // Tab click handler
   const handleTabClick = useCallback((section: SectionId) => {
     sectionRefs.current[section]?.scrollIntoView({ behavior: 'smooth' });
   }, []);
@@ -80,6 +81,12 @@ export default function OffersPage() {
     setToast({ isVisible: true, message: 'Welcome! All offers are now unlocked 🎉' });
   }, []);
 
+  // Logout handler
+  const handleLogout = useCallback(() => {
+    setIsSignedIn(false);
+    setToast({ isVisible: true, message: 'You have been logged out' });
+  }, []);
+
   // Copy code handler
   const handleCopy = useCallback((code: string) => {
     setToast({ isVisible: true, message: `Code "${code}" copied to clipboard!` });
@@ -92,17 +99,34 @@ export default function OffersPage() {
 
   return (
     <div className="min-h-screen bg-white pb-20 sm:pb-0">
-      {/* Header with Logo */}
-      <Header />
+      {/* Header - Full nav on desktop, hamburger on mobile */}
+      <Header 
+        onMenuClick={() => setIsSideMenuOpen(true)} 
+        isSignedIn={isSignedIn}
+        onSignIn={handleOpenLogin}
+        onLogout={handleLogout}
+      />
 
-      {/* Sign In CTA / Title */}
-      <SignInCTA isSignedIn={isSignedIn} onSignIn={handleOpenLogin} />
+      {/* Info Banner - Desktop */}
+      <div className="hidden lg:block bg-[#fdf9f7] border border-[#E5D5C3] mx-8 mt-3 rounded-lg">
+        <div className="flex items-center gap-2 px-4 py-3">
+          <span className="text-[#c16b3e]">✨</span>
+          <p className="text-sm text-gray-700">
+            You can now apply two Spacez Offers along with the Festive Offer and Referral Discount!
+          </p>
+        </div>
+      </div>
 
-      {/* Sticky Navigation Tabs */}
+      {/* Sign In CTA - Mobile only or when logged out on desktop */}
+      <div className="lg:hidden">
+        <SignInCTA isSignedIn={isSignedIn} onSignIn={handleOpenLogin} />
+      </div>
+
+      {/* Sticky Navigation Tabs - Mobile only */}
       <StickyNavTabs activeSection={activeSection} onTabClick={handleTabClick} />
 
       {/* Main Content */}
-      <main className="px-4 py-5">
+      <main className="px-4 lg:px-8 py-5">
         
         {/* ========== COUPONS SECTION ========== */}
         <section
@@ -110,16 +134,18 @@ export default function OffersPage() {
           ref={(el) => { sectionRefs.current.coupons = el; }}
           className="mb-8"
         >
-          <h2 className="text-lg font-semibold text-[#1F2937] mb-4">
-            Sitewide coupons:
+          <h2 className="text-xl font-semibold text-[#1F2937] mb-4">
+            Stay Offers
           </h2>
-          <div className="space-y-4">
+          
+          {/* Grid: 1 col mobile, 2 col tablet, 3 col desktop */}
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
             {coupons.map((coupon, index) => (
               <motion.div
                 key={coupon.id}
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
+                transition={{ delay: index * 0.05 }}
               >
                 <OfferCard offer={coupon} onAction={handleCopy} />
               </motion.div>
@@ -142,7 +168,6 @@ export default function OffersPage() {
           
           <AnimatePresence mode="wait">
             {!isSignedIn ? (
-              // LOCKED STATE - Show Teaser
               <motion.div
                 key="teaser-gift"
                 initial={{ opacity: 0 }}
@@ -152,19 +177,18 @@ export default function OffersPage() {
                 <BonusGiftCardTeaser onButtonClick={handleOpenLogin} />
               </motion.div>
             ) : (
-              // UNLOCKED STATE - Show Full List
               <motion.div
                 key="list-gift"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="space-y-4"
+                className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"
               >
                 {giftCards.map((card, index) => (
                   <motion.div
                     key={card.id}
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
+                    transition={{ delay: index * 0.05 }}
                   >
                     <OfferCard 
                       offer={card} 
@@ -190,7 +214,6 @@ export default function OffersPage() {
           
           <AnimatePresence mode="wait">
             {!isSignedIn ? (
-              // LOCKED STATE - Show Teaser
               <motion.div
                 key="teaser-payment"
                 initial={{ opacity: 0 }}
@@ -200,19 +223,18 @@ export default function OffersPage() {
                 <PaymentOfferTeaser onButtonClick={handleOpenLogin} />
               </motion.div>
             ) : (
-              // UNLOCKED STATE - Show Full List
               <motion.div
                 key="list-payment"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="space-y-4"
+                className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"
               >
                 {paymentOffers.map((offer, index) => (
                   <motion.div
                     key={offer.id}
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
+                    transition={{ delay: index * 0.05 }}
                   >
                     <OfferCard offer={offer} onAction={handleCopy} />
                   </motion.div>
@@ -226,12 +248,24 @@ export default function OffersPage() {
       {/* Mobile Bottom Navigation */}
       <MobileBottomNav isSignedIn={isSignedIn} onSignIn={handleOpenLogin} />
 
+      {/* Side Menu - Mobile only */}
+      <SideMenu
+        isOpen={isSideMenuOpen}
+        onClose={() => setIsSideMenuOpen(false)}
+        isSignedIn={isSignedIn}
+        onLogout={handleLogout}
+        onSignIn={handleOpenLogin}
+      />
+
       {/* Ghost Login Modal */}
       <LoginModal
         isOpen={isLoginModalOpen}
         onClose={() => setIsLoginModalOpen(false)}
         onLoginSuccess={handleLoginSuccess}
       />
+
+      {/* Welcome Popup for Assignment Viewers */}
+      <WelcomePopup />
 
       {/* Toast Notification */}
       <Toast

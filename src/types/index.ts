@@ -1,6 +1,5 @@
 /**
  * Spacez Offers - TypeScript Interfaces
- * Strict typing for the offers page components
  */
 
 /** Strip color options for offer cards */
@@ -19,13 +18,11 @@ export interface Offer {
   code: string;
   title: string;
   description: string;
-  /** Display text for the vertical strip: "₹1,500", "Flat 10%", "10% OFF" */
   discountLabel: string;
   stripColor: StripColor;
   brandLogo?: string;
   brandName?: string;
   readMoreLink?: string;
-  /** Terms and conditions */
   terms?: string;
 }
 
@@ -36,33 +33,10 @@ export interface OfferCardProps {
   onAction?: (code: string) => void;
 }
 
-/** Props for TeaserCard component */
-export interface TeaserCardProps {
-  title: string;
-  subtitle: string;
-  buttonText: string;
-  onButtonClick: () => void;
-  stripColor: StripColor;
-}
-
 /** Props for StickyNavTabs component */
 export interface StickyNavTabsProps {
   activeSection: SectionId;
   onTabClick: (section: SectionId) => void;
-}
-
-/** Bottom navigation item */
-export interface NavItem {
-  id: string;
-  label: string;
-  icon: string;
-  isActive?: boolean;
-}
-
-/** Auth state for signed in/out logic */
-export interface AuthState {
-  isSignedIn: boolean;
-  onSignIn: () => void;
 }
 
 /** Toast notification state */

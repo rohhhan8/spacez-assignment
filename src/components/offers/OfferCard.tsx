@@ -41,10 +41,7 @@ const brandLogos: Record<string, string> = {
 /**
  * OfferCard Component
  * 
- * Matches Figma design exactly:
- * - Light background (#fdf9f7)
- * - Plain dotted border on the right side of strip
- * - Buda font for discount text
+ * Original design with vertical strip, restored for grid layout.
  */
 export default function OfferCard({ 
   offer, 
@@ -68,12 +65,12 @@ export default function OfferCard({
   const showBrandLogo = offer.type !== 'coupon' && brandLogo;
 
   return (
-    <article className="flex overflow-hidden bg-[#fdf9f7]">
+    <article className="flex overflow-hidden bg-[#fdf9f7] h-full">
       {/* Left Strip - Vertical Text */}
       <div 
         className={`
           ${stripColors[offer.stripColor]}
-          w-[80px] flex-shrink-0 flex items-center justify-center
+          w-[70px] flex-shrink-0 flex items-center justify-center
           py-12
         `}
       >
@@ -88,7 +85,7 @@ export default function OfferCard({
       <div className={`flex-1 flex flex-col p-5 pl-6 border-l-2 border-dashed ${borderColors[offer.stripColor]}`}>
         {/* Header Row: Brand Logo/Title + Copy Button */}
         <div className="flex items-start justify-between mb-2">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 min-w-0 flex-1">
             {/* Brand Logo */}
             {showBrandLogo && (
               <div className="w-8 h-8 relative flex-shrink-0">
@@ -101,19 +98,19 @@ export default function OfferCard({
               </div>
             )}
             
-            <h3 className="text-lg font-bold text-[#1F2937] uppercase tracking-wide">
+            <h3 className="text-lg font-bold text-[#1F2937] uppercase tracking-wide truncate">
               {offer.title}
             </h3>
           </div>
           
-          {/* Copy Button - Text style */}
+          {/* Copy Button - Text style, no wrap */}
           <button
             onClick={handleAction}
             className={`
               flex items-center gap-1.5 text-sm font-medium
-              transition-colors flex-shrink-0
+              transition-colors flex-shrink-0 ml-2 whitespace-nowrap
               ${isCopied 
-                ? 'text-emerald-600' 
+                ? 'text-[#c16b3e]' 
                 : 'text-[#c16b3e]'
               }
             `}
